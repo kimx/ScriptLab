@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+</head>
+<body>
+    <button id="btnKim">send</button>
+    <input type="text" id="txtKim" />
+    <script>
+        (function ($) {
+            var kimCore = function (option) {
+                var main = {};
+                main._options = option;
+                main.hello = function (option) {
+                    $.extend(main._options, option);
+                    $("#txtKim").val(main._options.value);
+                };
+                return main;
+            };
+
+            $.fn.kim = function (option) {
+                var arg = arguments;
+                return this.each(function () {//固定寫法
+                    var $this = $(this);
+                    var data = $this.data("kimData");//取回之前的物件
+                    var options = typeof option == "object" && option;//判斷是物件參數才取回
+                    if (!data) {
+                        $this.data("kimData", (data = new kimCore(options)));//第一次呼叫，取不到物件需初始化，並塞入data暫存
+                    }
+                    //以下為方法叫用
+                    if (typeof option == 'string') {
+                        if (arg.length > 1)//多個參數叫,例:kim("hello",{value:"456"}),叫用script原生方法進入
+                            data[option].apply(data, Array.prototype.slice.call(arg, 1));
+                        else
+                            data[option]();//方法叫用 kim("hello");
+                    }
+                });
+            };
+
+        })(jQuery);
+
+        $("#btnKim").kim({ value: "123" });
+        $("#btnKim").kim("hello");
+        $("#btnKim").kim("hello", { value: "456" });//Final will display 456
+
+    </script>
+</body>
+</html>

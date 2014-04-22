@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+</head>
+<body>
+    <div id="holder">
+
+        <div id="test"></div>
+    </div>
+    <br />
+    <div id="show_parent"></div>
+    <script>
+        (function ($) {
+            var myTestMethods = function () {
+                // local variables
+                var last_added;
+
+                // local "private" methods
+                var init = function (options) {
+                    this.options = options;
+                    last_added = null;
+                    return this;
+                };
+
+                var add_that = function (elem) {
+                    last_added = elem;
+                    this.append(elem);
+                    return this;
+                };
+
+                var show_parent = function () {
+                    // alert("parent id=" + this.parent().attr('id'));
+                    $("#show_parent").html("parent id=" + this.parent().attr('id'));
+                }
+
+                return { // this are your obj "public" methods
+                    // notice we are not listing add_that method, therefore this method will be a "private" method
+                    init: init,
+                    show_parent: show_parent, // you can publish a private method
+                    get_last_added: function () {
+                        return last_added; // you can access local variables
+                    },
+                    add_this: function (elem) {
+                        return add_that.apply(this, elem);  // you can also run local methods
+                    }
+                }
+            };
+
+            $.fn.test = function (method) {
+                var obj_data = this.data('myTestData');
+                if (typeof (obj_data) != "undefined") {
+                    if (obj_data[method])
+                    {
+                        obj_data[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    }
+                    else
+                    {
+                        $.error('Method ' + method + ' does not exist on jQuery.test');
+                    }
+                }
+                else
+                {
+                    if (typeof (method) === 'object' || !method)
+                    {
+                        obj_data = myTestMethods();
+                        this.data('myTestData', obj_data);
+                        obj_data.init.apply(this, arguments);
+                    }
+                }
+            };
+
+        })(jQuery);
+
+        $('#test').test(); //init
+
+        $('#test').test('add_this', $('<div>Hello World d</div>'));
+        $('#test').test('show_parent');
+    </script>
+</body>
+</html>

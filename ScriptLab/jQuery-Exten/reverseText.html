@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script>
+        (function ($) {
+
+            // jQuery plugin definition
+            $.fn.reverseText = function (params) {
+
+                // merge default and user parameters
+                params = $.extend({ minlength: 0, maxlength: 99999 }, params);
+
+                // traverse all nodes
+                this.each(function () {
+
+                    // express a single node as a jQuery object
+                    var $t = $(this);
+
+                    // find text
+                    var origText = $t.text(), newText = '';
+
+                    // text length within defined limits?
+                    if (origText.length >= params.minlength && origText.length <= params.maxlength) {
+
+                        // reverse text
+                        for (var i = origText.length - 1; i >= 0; i--) newText += origText.substr(i, 1);
+                        $t.text(newText);
+
+                    }
+
+                });
+
+                // allow jQuery chaining
+                return this;
+            };
+
+        })(jQuery);
+
+    </script>
+</head>
+<body>
+
+    <h1>jQuery plugin: reverseText</h1>
+    <p>This jQuery plugin reverses all the text in the selected nodes.</p>
+
+    <ul>
+        <li>This text will be reversed</li>
+        <li>This text will not be reversed</li>
+        <li>reversed</li>
+        <li>not reversed</li>
+    </ul>
+
+    <script type="text/javascript">
+        // reverse even-numbered LI tag text
+        $("ul li:even").reverseText();
+    </script>
+
+</body>
+
+</html>
