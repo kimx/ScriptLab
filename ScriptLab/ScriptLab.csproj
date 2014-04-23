@@ -65,8 +65,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AMD\amd-sample\index-with-amd.html" />
+    <Content Include="AMD\amd-sample\index-without-amd.html" />
+    <Content Include="AMD\amd-sample\main-with-amd.js" />
+    <Content Include="AMD\amd-sample\main-without-amd.js" />
+    <Content Include="AMD\amd-sample\mymodule.js" />
+    <Content Include="AMD\amd-sample\require.js" />
+    <Content Include="AMD\DateRange.js" />
+    <Content Include="AMD\DateTime.js" />
+    <Content Include="AMD\FirstAMD.html" />
+    <Content Include="AMD\Main.js" />
     <Content Include="jQuery-Exten\GetExtend-sample.html" />
     <Content Include="jQuery-Exten\GetExtend.html" />
+    <Content Include="jQuery-Exten\CustomNamespace.html" />
     <Content Include="jQuery-Exten\reverseText.html" />
     <Content Include="Web.config" />
   </ItemGroup>
